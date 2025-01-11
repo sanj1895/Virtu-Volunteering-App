@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Opportunity</title>
+</head>
+<body>
+    <h1>Delete Opportunity</h1>
+    <form id="delete-opportunity-form">
+        <label for="delete-id">Opportunity ID:</label>
+        <input type="text" id="delete-id" name="delete-id" placeholder="Enter opportunity ID" required><br><br>
+
+        <button type="submit">Delete Opportunity</button>
+    </form>
+
+    <script>
+        document.getElementById('delete-opportunity-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('delete-id').value;
+
+            try {
+                const response = await fetch(`/opportunities/delete/${id}`, {
+                    method: 'DELETE',
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    alert('Opportunity deleted successfully!');
+                } else {
+                    alert(`Error: ${data.error}`);
+                }
+            } catch (err) {
+                console.error('Error deleting opportunity:', err);
+                alert('An unexpected error occurred.');
+            }
+        });
+    </script>
+</body>
+</html>

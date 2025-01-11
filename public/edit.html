@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Opportunity</title>
+</head>
+<body>
+    <h1>Edit Opportunity</h1>
+    <form id="edit-opportunity-form">
+        <label for="id">Opportunity ID:</label>
+        <input type="text" id="id" name="id" placeholder="Enter opportunity ID" required><br><br>
+
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" placeholder="New title"><br><br>
+
+        <label for="description">Description:</label>
+        <input type="text" id="description" name="description" placeholder="New description"><br><br>
+
+        <label for="category">Category (comma-separated):</label>
+        <input type="text" id="category" name="category" placeholder="New categories"><br><br>
+
+        <button type="submit">Update Opportunity</button>
+    </form>
+
+    <script>
+        document.getElementById('edit-opportunity-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('id').value;
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+            const category = document.getElementById('category').value.split(',');
+
+            try {
+                const response = await fetch(`/opportunities/edit/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        title,
+                        description,
+                        category,
+                    }),
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    alert('Opportunity updated successfully!');
+                } else {
+                    alert(`Error: ${data.error}`);
+                }
+            } catch (err) {
+                console.error('Error updating opportunity:', err);
+                alert('An unexpected error occurred.');
+            }
+        });
+    </script>
+</body>
+</html>
